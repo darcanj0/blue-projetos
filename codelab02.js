@@ -8,7 +8,7 @@ A única diferença que você verá para um jokenpô normal é:
 ---------tesoura é PODADOR
 O motivo dessa nomenclatura é um episódio da série 'Regular Show', que eu gosto bastante.
 
-v1 ==> aceita números pares e ímpares de rodadas e não contabiliza empates.
+v1 ==> Não pergunta se o jogador deseja continuar
 */
 
 //intro
@@ -26,12 +26,11 @@ let pontosMaquina = 0
 let pontosJogador = 0
 
 //pegar o total de rodadas como número inteiro
-const totalDeRodadas = parseInt(prompt("Digite o número de rodadas que você quer jogar contra o computador: "));
+let totalDeRodadas = parseInt(prompt("Digite o número de rodadas que você quer jogar contra o computador: "));
 while (isNaN(totalDeRodadas)){
     console.log('Você precisa digitar um número!')
     totalDeRodadas = parseInt(prompt("Digite o número de rodadas que você quer jogar contra o computador: "));
 }
-let contadorDeRodadas = 0;
 
 //funcoes usadas em cada rodada
 function escolhaJogador(){
@@ -72,8 +71,8 @@ function rodada(){
 }
 
 //inicio das rodadas
-while (contadorDeRodadas < totalDeRodadas){
-    contadorDeRodadas ++;
+let contadorDeRodadas = 0;
+for( ; contadorDeRodadas < totalDeRodadas; contadorDeRodadas++){
     rodada();
 }
 
@@ -88,3 +87,5 @@ if (pontosJogador > pontosMaquina){
 }
 console.log("Você marcou", pontosJogador, "pontos.");
 console.log("e a máquina marcou", pontosMaquina, "pontos.");
+
+//COLOCAR A OPÇÃO DE CONTINUAR DE NOVO
