@@ -8,7 +8,6 @@ A única diferença que você verá para um jokenpô normal é:
 ---------tesoura é PODADOR
 O motivo dessa nomenclatura é um episódio da série 'Regular Show', que eu gosto bastante.
 
-v1 ==> aceita números pares e ímpares de rodadas e não contabiliza empates.
 */
 
 const prompt = require('prompt-sync')();
