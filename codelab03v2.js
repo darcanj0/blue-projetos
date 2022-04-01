@@ -295,7 +295,7 @@ do{
                 } else{
                     heroi.itens.push(monstro.loot);
                     heroi.dinheiro += recompensa;
-                    console.log(`Você consegue derrotar o monstro, felizmente e leva seu(a) ${monstro.loot} e a recompensa.`);
+                    console.log(`Você consegue derrotar o monstro e leva seu(a) ${monstro.loot} e a recompensa.`);
                 }
             }
         } else if (resposta == 'fugir') {
