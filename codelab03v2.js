@@ -139,7 +139,6 @@ do{
         //sorteia entre aliado(), lugar(), e inimigo() 
         let i = Math.floor(Math.random() * 3);
         let retorno;
-        console.log();
         if (i == 0){ 
             //evento é um monstro aleatorio
             retorno = 'monstro';
@@ -327,7 +326,7 @@ do{
         tempo.amanhecer();
         prompt("Pressione ENTER para continuar");
     }
-
+    
     //intro
     console.clear();
     console.log(`A RECONQUISTA DE NEVERWINTER\n
