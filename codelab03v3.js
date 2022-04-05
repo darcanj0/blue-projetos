@@ -1,4 +1,6 @@
 const prompt = require ('prompt-sync')();
+const figlet = require ('figlet');
+const colors = require ('colors');
 let desejaContinuar;
 do{
     //possibilidades
@@ -43,7 +45,7 @@ do{
 
     //heroi
     const heroi = {
-        vida: 2, //max = 4
+        vida: 4, //max = 4
         poder: 0, // max = 10
         itens: [],
         aliados: [],
@@ -55,7 +57,7 @@ do{
             Seu poder é ${this.poder}/10
             Itens: ${this.itens}
             Aliados: ${this.aliados}
-            Dinheiro: ${this.dinheiro}`)
+            Dinheiro: ${this.dinheiro}`.blue.bold)
             console.log();
         },
         mexeVida: function(valor = 1){
@@ -88,7 +90,7 @@ do{
         (n) se ele não vai ser seu aliado.`);
         let rep = prompt().toLowerCase();
         while (rep != 'n' && rep != 's'){
-            rep = prompt("Digite uma resposta válida (s/n) ");
+            rep = prompt("Digite uma resposta válida (s/n) ".red.bold);
         }
         if (rep == 's'){
             heroi.aliados.push(npc);
@@ -205,7 +207,7 @@ do{
         heroi.mostraStatus();
         let carrinho = prompt();
         while (carrinho != '1' && carrinho != '2' && carrinho != '3' && carrinho != 'n'){
-            carrinho = prompt("Digite uma resposta válida: ");
+            carrinho = prompt("Digite uma resposta válida: ".red.bold);
         }
         if (carrinho == 'n'){
             return
@@ -231,7 +233,7 @@ do{
         heroi.mostraStatus();
         let resposta = prompt().toLowerCase();
         while (resposta != 'enfrentar' && resposta != 'fugir'){
-            resposta = prompt(`Digite uma resposta válida: `);
+            resposta = prompt(`Digite uma resposta válida: `.red.bold);
         }
         if (resposta == 'enfrentar'){
             if (monstro.dificuldade == 3){
@@ -328,14 +330,20 @@ do{
         heroi.mexeVida(arg);
         heroi.mostraStatus();
         tempo.amanhecer();
-        prompt("Pressione ENTER para continuar");
+        prompt("Pressione ENTER para continuar".red.bold);
         console.clear();
     }
         
     //intro
     console.clear();
-    console.log(`A RECONQUISTA DE NEVERWINTER\n
-    Você é o último cavaleiro defensor da cidade de Neverwinter.
+    console.log(figlet.textSync(`NEVER FORGET NEVERWINTER`, {
+        font: 'banner3-D',
+        horizontalLayout: 'default',
+        verticalLayout: 'default',
+        width: 180,
+        whitespaceBreak: true
+    }).red.italic);
+    console.log(`Você é o último cavaleiro defensor da cidade de Neverwinter.
     Há algumas semanas, houve um insurreição na cidade e o resultado dela foi a tomada do poder
     por 3 terroristas procurados por toda a Costa da Espada, bem como o desaparecimento
     de todos os seus companheiros cavaleiros defensores.\n
@@ -343,20 +351,20 @@ do{
     console.log(`No jogo, você buscará se fortalecer (TREINAR), explorar (VIAJAR), ganhar itens e aliados para retomar a cidade. Você tem uma semana para isso.`);
     console.log(`No caminho, você precisa ter cuidado. Alguns não serão realmente seus aliados, você pode não conseguir derrotar alguns monstros
     e alguns baús podem te prejudicar.\n`)
-    prompt("Pressione ENTER para continuar.");
+    prompt("Pressione ENTER para continuar.".red.bold);
     console.clear();
 
     //dia1
-    console.log(`Dia 1\n
-    Agora é ${tempo.periodoAtual()}.
+    console.log(`Dia 1`);
+    console.log(`Agora é ${tempo.periodoAtual()}.
     Você desperta numa carroça. Você está sendo levado por um coveiro, pois
     ele acha que você estava morto. Você
     (1) - pula da carroça ou 
-    (2) - deixa o coveiro te levar até o final do percurso?`);
+    (2) - deixa o coveiro te levar até o final do percurso?`.yellow);
     let rep = prompt().toLowerCase();
     console.clear();
     while (rep != '1' && rep != '2'){
-        rep = prompt("Digite uma resposta válida (1/2) ");
+        rep = prompt("Digite uma resposta válida (1/2) ".red.bold);
     }
     if (rep == '1'){
         console.log(`Você vai mata adentro por umas horas até chegar em uma estrada e começa a seguir ela.
@@ -379,7 +387,7 @@ do{
     tempo.avancaTempo();
     console.log(`Na estrada, vc perde um tempo
     caçando, arrumando uns materiais para acampar e quando se dá conta já é ${tempo.periodoAtual()}.
-    Percebendo isso, você resolve descansar até amanhã.`);
+    Percebendo isso, você resolve descansar até amanhã.`.yellow);
     fimDoDia();
 
     //loop dos dias 2 a 6
@@ -387,86 +395,86 @@ do{
         console.log(`Dia ${tempo.dia}`);
         //INtros de cada dia
         if (tempo.dia == 2){
-            console.log("Nesse dia, você pode apenas viajar.");
+            console.log("Nesse dia, você pode apenas viajar.".yellow);
             console.log();
         } else if (tempo.dia == 3){
             console.log(`Você acorda na pequenina cidade. Nesse dia, você pode escolher entre
             (treinar) para tentar ganhar poder,
             (viajar) para explorar os arredores da cidade ou
-            (comprar) para visitar alguma loja.`);
+            (comprar) para visitar alguma loja.`.yellow);
             console.log();
         } else if (tempo.dia == 4){
             console.log(`Nesse dia, você acorda e já cai na estrada. Você quer ir até
-            Waterdeep, uma cidade grande da costa da espada. A viagem é longa, então hoje você só poderá viajar.`);
+            Waterdeep, uma cidade grande da costa da espada. A viagem é longa, então hoje você só poderá viajar.`.yellow);
             console.log();
         } else if (tempo.dia == 5){
             console.log(`Você amanhece na grande cidade de Waterdeep. Por ser uma cidade grande, você hoje
             tem as opções de
             (viajar) - explorar o condado e a floresta perto da cidade.
             (treinar) - para adquirir poder.
-            (comprar) - visitar o comércio da cidade para adquirir itens.`);
+            (comprar) - visitar o comércio da cidade para adquirir itens.`.yellow);
             console.log();
         } else if (tempo.dia == 6){
             console.log(`Nesse dia, você acorda e precisa se apressar para voltar a
             Neverwinter a tempo de conseguir enfrentar os 3 procurados. A viagem é longa e, por isso, você
-            vai precisar passar o dia todo viajando.`);
+            vai precisar passar o dia todo viajando.`.yellow);
             console.log();
         }
 
         //estrutura de um dia passando
         while (tempo.periodoAtual() != 'MADRUGADA'){
-            console.log(`Agora é ${tempo.periodoAtual()} do dia ${tempo.dia}.`);
+            console.log(`Agora é ${tempo.periodoAtual()} do dia ${tempo.dia}.`.blue.bold);
             console.log();
             if (tempo.dia == 2 || tempo.dia == 4 || tempo.dia == 6){
                 //nesses dias, o personagem só viaja
                 viajar();
-                prompt("Pressione ENTER para continuar");
+                prompt("Pressione ENTER para continuar".red.bold);
                 console.clear();
                 verificaFalecimento();
             } else if (tempo.dia == 3 || tempo.dia == 5){
                 //nesses dias, o personagem pode viajar, treinar ou comprar
                 let rep = prompt("Digite qual ação você fará agora: (viajar, treinar ou comprar) ").toLowerCase();
                 while (rep != 'treinar' && rep != 'viajar' && rep != 'comprar'){
-                    rep = prompt("Digite uma ação válida(viajar/treinar/comprar): ").toLowerCase();
+                    rep = prompt("Digite uma ação válida(viajar/treinar/comprar): ".red.bold).toLowerCase();
                 }
                 console.log();
                 if (rep == 'treinar'){
                     treinar();
-                    prompt("Pressione ENTER para continuar.");
+                    prompt("Pressione ENTER para continuar.".red.bold);
                     console.clear();
                     verificaFalecimento();
                 } else if (rep == 'viajar'){
                     viajar();
-                    prompt('Pressione ENTER para continuar');
+                    prompt('Pressione ENTER para continuar'.red.bold);
                     console.clear();
                     verificaFalecimento();
                 } else if (rep == 'comprar'){
                     loja(tempo.dia);
-                    prompt("Pressione ENTER para continuar");
+                    prompt("Pressione ENTER para continuar".red.bold);
                     console.clear();
                 }
             }
         }
 
         //OUTros de cada dia
-        console.log(`No início da ${tempo.periodoAtual()} do dia ${tempo.dia},`);
+        console.log(`No início da ${tempo.periodoAtual()} do dia ${tempo.dia},`.blue.bold);
         if (tempo.dia == 2){
-            console.log(`você encontra uma pequena cidadezinha e resolve dormir nela até de manhã.`);
+            console.log(`você encontra uma pequena cidadezinha e resolve dormir nela até de manhã.`.yellow);
         } else if (tempo.dia == 3){
-            console.log(`você está de volta à pequenina cidade e então dorme até amanhecer. Você recupera 1 ponto de vida no descanso.`);
+            console.log(`você está de volta à pequenina cidade e então dorme até amanhecer. Você recupera 1 ponto de vida no descanso.`.yellow);
             fimDoDia(1);
             continue cadaDia
         } else if ( tempo.dia == 4){
-            console.log(`você chega nos portões de Waterdeep. Você procura um lugar qualquer para dormir e depois descansa até amanhecer.`);
+            console.log(`você chega nos portões de Waterdeep. Você procura um lugar qualquer para dormir e depois descansa até amanhecer.`.yellow);
         } else if (tempo.dia == 5){
             console.log(`você volta à cidade para dormir. É de bom proveito que você fique na cidade mais um dia, 
-            para se fortalecer mais. Você assim faz. Você recupera 1 ponto de vida no descanso.`);
+            para se fortalecer mais. Você assim faz. Você recupera 1 ponto de vida no descanso.`.yellow);
             fimDoDia(1);
             continue cadaDia
         } else if (tempo.dia == 6){
             console.log(`você chega aos portões de Neverwinter. Você precisa descansar, pois amanhã será a batalha final.
             Todos os aliados feitos no caminho (se há algum) já estão em Neverwinter esperando o ataque.
-            Você recupera 2 pontos de vida.`);
+            Você recupera 2 pontos de vida.`.yellow);
             fimDoDia(2);
             continue cadaDia
         }
@@ -478,7 +486,7 @@ do{
     //dia 7 batalha final
     console.clear();
     console.log(`Dia 7\n
-    Hoje é o grande dia! Hoje a batalha final ocorre. Após seu descanso, você vai até a praça, onde você combinou de encontrar com seus aliados.`);
+    Hoje é o grande dia! Hoje a batalha final ocorre. Após seu descanso, você vai até a praça, onde você combinou de encontrar com seus aliados.`.yellow);
     let temTraidor;
     for (let i = 0; i < heroi.aliados.length; i++){
         if (traidores.includes(heroi.aliados[i])){
@@ -495,12 +503,12 @@ do{
         }
         console.log(`Eles logo partem pra cima de você e lhe roubam todo seu dinheiro e tentam te roubar alguns itens.
         Eles também te pegam desprevinido e você perde poder.`);
-        console.log(`Traíras: ${heroi.ratos}`);
+        console.log(`Traíras: ${heroi.ratos}`.red.bold);
     }
     console.log(`Esses são seus status agora:`);
     heroi.mostraStatus();
     console.log(`Após o ocorrido, o combate final de inicia.`);
-    prompt('Pressione ENTER para continuar.');
+    prompt('Pressione ENTER para continuar.'.red.bold);
     console.clear();
     ////o combate final
     //2 aliados  req 1
@@ -538,9 +546,15 @@ do{
 
     console.log();
     console.log();
-    console.log("FIM DE JOGO");
-    desejaContinuar = prompt("Digite (s) se deseja continuar ou (n) se deseja encerrar: ").toLowerCase();
+    console.log(figlet.textSync(`FIM DE JOGO`, {
+        font: 'banner3-D',
+        horizontalLayout: 'default',
+        verticalLayout: 'default',
+        width: 180,
+        whitespaceBreak: true
+    }).red.italic);
+    desejaContinuar = prompt("Digite (s) se deseja continuar ou (n) se deseja encerrar: ".red.bold).toLowerCase();
     while(desejaContinuar !='s' && desejaContinuar != 'n'){
-        desejaContinuar = prompt("digite uma resposta válida: ").toLowerCase();
+        desejaContinuar = prompt("digite uma resposta válida: ".red.bold).toLowerCase();
     }
 }while (desejaContinuar == 's')
