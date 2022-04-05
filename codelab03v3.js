@@ -22,6 +22,7 @@ do{
 
     //tempo
     const tempo = {
+        dia: 1,
         indexTempoAtual: 0,
         horarios: ['MANHÃ', 'TARDE', 'NOITE', 'MADRUGADA'],
         periodoAtual: function(){
@@ -30,17 +31,19 @@ do{
         avancaTempo: function(){
         this.indexTempoAtual ++;
         if (this.indexTempoAtual > 3){
+            this.dia ++;
             this.indexTempoAtual = 0;
         }
         },
         amanhecer: function(){
-        this.indexTempoAtual = 0;
+            this.dia ++;
+            this.indexTempoAtual = 0;
         }
     }
 
     //heroi
     const heroi = {
-        vida: 4, //max = 4
+        vida: 2, //max = 4
         poder: 0, // max = 10
         itens: [],
         aliados: [],
@@ -56,29 +59,29 @@ do{
             console.log();
         },
         mexeVida: function(valor = 1){
-        this.vida += valor;
-        if (this.vida <= 0){
-            morto = true;
-            console.log(`Seus pontos de vida foram reduzidos a 0 ou menos. Sua vida reiniciará e você baterá as botas.`)
-            this.vida = 4;
-        } else if (this.vida > 4){
-            this.vida = 4;
-        }
+            this.vida += valor;
+            if (this.vida <= 0){
+                morto = true;
+                console.log(`Seus pontos de vida foram reduzidos a 0 ou menos. Sua vida reiniciará e você baterá as botas.`)
+                this.vida = 4;
+            } else if (this.vida > 4){
+                this.vida = 4;
+            }
         },
         mexePoder: function(valor = 1){
-            this.poder += valor;
-        if (this.poder < 0){
-            this.poder = 0;
-        } else if (this.poder > 10){
-            this.poder = 10
-        }
+                this.poder += valor;
+            if (this.poder < 0){
+                this.poder = 0;
+            } else if (this.poder > 10){
+                this.poder = 10;
+            }
         } 
     }
-
     //funcoes para eventos aleatorios
     function aliado(){
         //gera um encontro com npc aleatorio no terminal
         let npc = sorteador(npcs);
+        console.log();
         console.log(`Você encontra um(a) ${npc}. Conversando com ele(a), você
         conta seu objetivo de retomar a cidade e pode decidir
         (s) se ele vai ser seu aliado ou
@@ -94,6 +97,7 @@ do{
     function lugar(){
         //gera uma passagem por um lugar() aleatorio e pode encontrar um inimigo() ou um itemExistente aleatorio
         let lugar = sorteador(lugares);
+        console.log();
         console.log(`No seu caminho, você se depara com um(a) ${lugar}. Você investiga o local mais a fundo`);
         let aux = Math.floor(Math.random() * 10);
         if (aux % 2 == 0){
@@ -126,6 +130,7 @@ do{
         //gera um encontro com um monstro aleatório no terminal
         let monstro = sorteador(bestiario);
         let recompensa = 10 * monstro.dificuldade;
+        console.log();
         console.log(`Você encontra um(a) ${monstro.nome} furioso!`);
         combate(monstro, recompensa);
     }
@@ -154,7 +159,7 @@ do{
         console.log();
         return retorno;
     }
-
+    
     //funcoes de acao
     function treinar(requisito = '', bonusPoder = 0){
         //avança o tempo(), pode aparecer aliado() ou inimigo() e há ganho maior ou menor de poder, dependendo do requisito
@@ -215,7 +220,7 @@ do{
             return
         }
     }
-
+    
     //funcao do combate obg deus pai o melhor do mundi siii aq e luva de predeiro
     function combate(monstro, recompensa){
         // se derrotar, ganha poder, além da recompensa
@@ -301,7 +306,7 @@ do{
             return
         }
     }
-
+    
     //funcao pra verificar o falecimento
     function verificaFalecimento(){
         if (morto){
@@ -311,21 +316,22 @@ do{
             console.log();
             console.log();
             heroi.mexePoder(-10);
-            tempo.amanhecer();
             heroi.dinheiro = 0;
+            tempo.indexTempoAtual = 0;
             morto = false;
         }
         return
     }
-
+    
     //funcao do fim do dia
     function fimDoDia(arg = 0){
         heroi.mexeVida(arg);
         heroi.mostraStatus();
         tempo.amanhecer();
         prompt("Pressione ENTER para continuar");
+        console.clear();
     }
-    
+        
     //intro
     console.clear();
     console.log(`A RECONQUISTA DE NEVERWINTER\n
@@ -374,127 +380,100 @@ do{
     console.log(`Na estrada, vc perde um tempo
     caçando, arrumando uns materiais para acampar e quando se dá conta já é ${tempo.periodoAtual()}.
     Percebendo isso, você resolve descansar até amanhã.`);
-    //fim de cada dia
     fimDoDia();
 
-    //dia2
-    console.clear();
-    console.log(`Dia 2\n`);
-    console.log("Nesse dia, você pode apenas viajar.");
-    console.log();
-    while(tempo.periodoAtual() != 'MADRUGADA'){
-        console.log(`Agora é de ${tempo.periodoAtual()}`);
-        viajar();
-        prompt("Pressione ENTER para continuar.");
-        console.clear();
-        verificaFalecimento();
-    }
-    console.log(`No início da ${tempo.periodoAtual()}, você encontra uma pequenina
-    cidade e resolve dormir nela até de manhã.`);
-    fimDoDia();
-
-    //dia3
-    console.clear();
-    console.log(`Dia 3\n
-    Você acorda de ${tempo.periodoAtual()} na pequenina cidade. Nesse dia, você pode escolher entre
-    (treinar) para tentar ganhar poder,
-    (viajar) para explorar os arredores da cidade ou
-    (comprar) para visitar alguma loja.`);
-    console.log();
-    while(tempo.periodoAtual() != 'MADRUGADA'){
-        console.log(`Agora é de ${tempo.periodoAtual()}`);
-        let rep = prompt("Digite qual ação você fará agora: (viajar, treinar ou comprar) ").toLowerCase();
-        while (rep != 'treinar' && rep != 'viajar' && rep != 'comprar'){
-            rep = prompt("Digite uma ação válida(viajar/treinar/comprar): ").toLowerCase();
+    //loop dos dias 2 a 6
+    cadaDia: while (tempo.dia != 7){
+        console.log(`Dia ${tempo.dia}`);
+        //INtros de cada dia
+        if (tempo.dia == 2){
+            console.log("Nesse dia, você pode apenas viajar.");
+            console.log();
+        } else if (tempo.dia == 3){
+            console.log(`Você acorda na pequenina cidade. Nesse dia, você pode escolher entre
+            (treinar) para tentar ganhar poder,
+            (viajar) para explorar os arredores da cidade ou
+            (comprar) para visitar alguma loja.`);
+            console.log();
+        } else if (tempo.dia == 4){
+            console.log(`Nesse dia, você acorda e já cai na estrada. Você quer ir até
+            Waterdeep, uma cidade grande da costa da espada. A viagem é longa, então hoje você só poderá viajar.`);
+            console.log();
+        } else if (tempo.dia == 5){
+            console.log(`Você amanhece na grande cidade de Waterdeep. Por ser uma cidade grande, você hoje
+            tem as opções de
+            (viajar) - explorar o condado e a floresta perto da cidade.
+            (treinar) - para adquirir poder.
+            (comprar) - visitar o comércio da cidade para adquirir itens.`);
+            console.log();
+        } else if (tempo.dia == 6){
+            console.log(`Nesse dia, você acorda e precisa se apressar para voltar a
+            Neverwinter a tempo de conseguir enfrentar os 3 procurados. A viagem é longa e, por isso, você
+            vai precisar passar o dia todo viajando.`);
+            console.log();
         }
-        if (rep == 'treinar'){
-            treinar();
-            prompt("Pressione ENTER para continuar.");
-            console.clear();
-            verificaFalecimento();
-        } else if (rep == 'viajar'){
-            viajar();
-            prompt('Pressione ENTER para continuar');
-            console.clear();
-            verificaFalecimento();
-        } else if (rep == 'comprar'){
-            loja(3);
-            prompt("Pressione ENTER para continuar");
-        }
-    }
-    console.log(`No início da ${tempo.periodoAtual()}, vc está de volta à pequenina
-    cidade e então dorme até amanhecer. Você recupera 1 ponto de vida no descanso.`);
-    fimDoDia(1);
 
-    //dia 4
-    console.clear();
-    console.log(`Dia 4\n
-    Nesse dia, você acorda de ${tempo.periodoAtual()} e já cai na estrada. Você quer ir até
-    Waterdeep, uma cidade grande da costa da espada. A viagem é longa, então hoje você só poderá viajar.`);
-    console.log();
-    while(tempo.periodoAtual() != 'MADRUGADA'){
-        console.log(`Agora é de ${tempo.periodoAtual()}.`)
-        viajar();
-        prompt("Pressione ENTER para continuar");
-        console.clear();
-        verificaFalecimento();
-    }
-    console.log(`No começo da ${tempo.periodoAtual()}, você chega nos portões de Waterdeep.
-    Você procura um lugar qualquer para dormir e depois descansa até amanhecer.`);
-    fimDoDia();
-
-    //dia 5
-    console.clear();
-    console.log(`Dia 5\n
-    Você amanhece na grande cidade de Waterdeep. Por ser uma cidade grande, você hoje
-    tem as opções de
-    (viajar) - explorar o condado e a floresta perto da cidade.
-    (treinar) - para adquirir poder.
-    (comprar) - visitar o comércio da cidade para adquirir itens.`);
-    console.log();
-    while(tempo.periodoAtual() != 'MADRUGADA'){
-        console.log(`Agora é de ${tempo.periodoAtual()}`);
-        rep = prompt("Digite qual ação você fará agora: (viajar, treinar, comprar) ").toLowerCase();
-        while(rep != 'viajar' && rep != 'treinar' && rep != 'comprar'){
-            rep = prompt("Digite uma ação válida: (viajar/treinar/comprar)");
+        //estrutura de um dia passando
+        while (tempo.periodoAtual() != 'MADRUGADA'){
+            console.log(`Agora é ${tempo.periodoAtual()} do dia ${tempo.dia}.`);
+            console.log();
+            if (tempo.dia == 2 || tempo.dia == 4 || tempo.dia == 6){
+                //nesses dias, o personagem só viaja
+                viajar();
+                prompt("Pressione ENTER para continuar");
+                console.clear();
+                verificaFalecimento();
+            } else if (tempo.dia == 3 || tempo.dia == 5){
+                //nesses dias, o personagem pode viajar, treinar ou comprar
+                let rep = prompt("Digite qual ação você fará agora: (viajar, treinar ou comprar) ").toLowerCase();
+                while (rep != 'treinar' && rep != 'viajar' && rep != 'comprar'){
+                    rep = prompt("Digite uma ação válida(viajar/treinar/comprar): ").toLowerCase();
+                }
+                console.log();
+                if (rep == 'treinar'){
+                    treinar();
+                    prompt("Pressione ENTER para continuar.");
+                    console.clear();
+                    verificaFalecimento();
+                } else if (rep == 'viajar'){
+                    viajar();
+                    prompt('Pressione ENTER para continuar');
+                    console.clear();
+                    verificaFalecimento();
+                } else if (rep == 'comprar'){
+                    loja(tempo.dia);
+                    prompt("Pressione ENTER para continuar");
+                    console.clear();
+                }
+            }
         }
-        if (rep == 'viajar'){
-            viajar();
-            prompt("Pressione ENTER para continuar");
-            console.clear();
-            verificaFalecimento();
-        } else if (rep == 'treinar'){
-            treinar();
-            prompt("Pressione ENTER para continuar");
-            console.clear();
-            verificaFalecimento();
-        } else if (rep == 'comprar'){
-            loja(5);
-            prompt("Pressione ENTER para continuar");
-        }
-    }
-    console.log(`No final do dia, você volta à cidade para dormir. É de bom proveito
-    que você fique na cidade mais um dia, para se fortalecer mais. Você assim faz. Você recupera 1 ponto de vida no descanso`);
-    fimDoDia(1);
 
-    //dia 6
-    console.clear();
-    console.log(`Dia 6\n
-    Nesse dia, você acorda de ${tempo.periodoAtual()} e precisa se apressar para voltar a
-    Neverwinter a tempo de conseguir enfrentar os 3 procurados. A viagem é longa e, por isso, você
-    vai precisar passar o dia todo viajando.`);
-    console.log();
-    while(tempo.periodoAtual() != 'MADRUGADA'){
-        console.log(`Agora é de ${tempo.periodoAtual()}.`);
-        viajar();
-        prompt("Pressione ENTER para continuar");
-        console.clear();
-        verificaFalecimento();
+        //OUTros de cada dia
+        console.log(`No início da ${tempo.periodoAtual()} do dia ${tempo.dia},`);
+        if (tempo.dia == 2){
+            console.log(`você encontra uma pequena cidadezinha e resolve dormir nela até de manhã.`);
+        } else if (tempo.dia == 3){
+            console.log(`você está de volta à pequenina cidade e então dorme até amanhecer. Você recupera 1 ponto de vida no descanso.`);
+            fimDoDia(1);
+            continue cadaDia
+        } else if ( tempo.dia == 4){
+            console.log(`você chega nos portões de Waterdeep. Você procura um lugar qualquer para dormir e depois descansa até amanhecer.`);
+        } else if (tempo.dia == 5){
+            console.log(`você volta à cidade para dormir. É de bom proveito que você fique na cidade mais um dia, 
+            para se fortalecer mais. Você assim faz. Você recupera 1 ponto de vida no descanso.`);
+            fimDoDia(1);
+            continue cadaDia
+        } else if (tempo.dia == 6){
+            console.log(`você chega aos portões de Neverwinter. Você precisa descansar, pois amanhã será a batalha final.
+            Todos os aliados feitos no caminho (se há algum) já estão em Neverwinter esperando o ataque.
+            Você recupera 2 pontos de vida.`);
+            fimDoDia(2);
+            continue cadaDia
+        }
+
+        //todo dia fazer isso no final
+        fimDoDia();
     }
-    console.log(`No início da ${tempo.periodoAtual()}, você chega aos portões de Neverwinter. Você
-    precisa descansar, pois amanhã será a batalha final. Todos os aliados feitos no caminho (se há algum)
-    já estão em Neverwinter esperando o ataque.`);
-    fimDoDia(2);
 
     //dia 7 batalha final
     console.clear();
@@ -524,8 +503,8 @@ do{
     prompt('Pressione ENTER para continuar.');
     console.clear();
     ////o combate final
-    //2 aliados req 1
-    //2 itens   req 2
+    //2 aliados  req 1
+    //2 itens    req 2
     //poder > 7  req 3
     let req1 = heroi.aliados.length - heroi.ratos.length > 1;
     let req2 = heroi.poder > 7;
@@ -556,6 +535,7 @@ do{
         -Vc tem pelo menos 8 de poder: ${req3}\n
         Com isso, você é derrotado pelos três procurados, é encarcerado e a cidade de Neverwinter viverá tempos difíceis!!!`);
     }
+
     console.log();
     console.log();
     console.log("FIM DE JOGO");
@@ -563,4 +543,4 @@ do{
     while(desejaContinuar !='s' && desejaContinuar != 'n'){
         desejaContinuar = prompt("digite uma resposta válida: ").toLowerCase();
     }
-} while (desejaContinuar == 's')
+}while (desejaContinuar == 's')
