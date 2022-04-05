@@ -10,3 +10,5 @@ O número à frente do nome codelab corresponde ao número da semana corresponde
 // para rodar o codelab03v3, instale os módulos figlet e colors com:
 npm install figlet
 npm install colors
+
+ATENÇÃO: PARA CORREÇÕES, USE A VERSÃO MAIS RECENTE DO PROJETO AVALIADO.
